@@ -7,7 +7,8 @@ import breeze.stats.distributions.{MultivariateGaussian, RandBasis}
 
 import scala.util.Random
 
-object DataGeneration  {
+
+object DataGeneration{
 
   def randomMixture(modes: List[DenseVector[Double]],
                               covariances: List[DenseMatrix[Double]],
