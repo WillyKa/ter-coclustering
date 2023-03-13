@@ -20,7 +20,6 @@ class BiTM(val nbRowNeuron: Int, val nbColNeuron: Int, datas: RDD[Array[Double]]
   //
 
   private val _nbDataCol = datas.first().length
-  println("Heyyyy my friend")
   private val _nbNeurons = nbRowNeuron * nbColNeuron
 
   // Init randomly column neurons affectation
@@ -61,9 +60,7 @@ class BiTM(val nbRowNeuron: Int, val nbColNeuron: Int, datas: RDD[Array[Double]]
         // Affectation des colonnes
         _colNeuronAffectation = new BiTMCol(_neuronMatrix, _nbNeurons, _nbDataCol, _colNeuronAffectation).computeColAffectation()
         println("MON AFF EST "+_colNeuronAffectation.length)
-        for (c <- 0 until _colNeuronAffectation.length) {
-        println("col"+c+" : "+_colNeuronAffectation(c))
-      }
+
 
 
         // Affectation des lignes et re-calcul du modèle
@@ -254,7 +251,7 @@ class BiTM(val nbRowNeuron: Int, val nbColNeuron: Int, datas: RDD[Array[Double]]
 
 
 
-    rowOrderData.map(_.toArray.zipWithIndex.map(d => (_colNeuronAffectation(d._2), d._1)).sortBy(_._1).map(_._1))
+    rowOrderData.map(_.toArray.zipWithIndex.map(d => (_colNeuronAffectation(d._2), d._1)).sortBy(_._1).map(_._2.toInt))
     /*- Toarray.zipWithIndex convertit un vecteur en : (0.69,0), (0.23,1), (0.65,2), (1.51,3) donc chaque élement a un indice de colonne ) */
     /* -Ensuite pour chaque couple on cherche le neurone auquel il est affecté (après avoir fait un tri sur les lignes et regrouper les lignes
     appartenant au neurone 0 au début ( rowOrderData)) donc on lui donne l'indice, puis il cherche a quel colonne il a été affecté ) .

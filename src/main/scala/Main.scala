@@ -7,6 +7,9 @@ import org.apache.spark.ml.linalg.{Vector, Vectors}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
+
+import java.io.PrintWriter
+import scala.collection.mutable.ArrayBuffer
 import utils.{DataGenerator, NamedVector}
 
 import java.security.Permission
@@ -70,18 +73,13 @@ object Main {
       textFile("C:\\Users\\33658\\IdeaProjects\\NPLBM\\src\\main\\waveform-5000_csv.csv").map
     (line => line.split(",").map(_.toDouble))*/
 
-    val datas = sc.textFile("C:\\Users\\33658\\IdeaProjects\\NPLBM\\src\\main\\waveform-5000_csv.csv")
+    val datas = sc.textFile("C:\\Users\\33658\\IdeaProjects\\ter-coclustering\\src\\main\\waveform-5000_csv.csv")
       .mapPartitionsWithIndex((index, iterator) => if (index == 0) iterator.drop(1) else iterator)
       .map(line => line.split(",").map(_.toDouble).dropRight(1))
 
     val premiereLigne = datas.first()
 
-    // Afficher la première valeur de la première ligne
-    datas.collect().foreach(arr => {
-      arr.foreach(element => {
-        println(element)
-      })
-    })
+
     /*ON DEVRA PEUT ETRE AUSSI ENLEVER LA COLONNE CLASS ( COMME LE PROF AVAIT DIT )*/
 
 
@@ -99,12 +97,16 @@ object Main {
           val affData = model.affectation(datas)
 
 
-    affData.first().foreach(element => {
-        println(element)
-      })
+    val csvData = affData.map(_.mkString(",")).collect()
+    val writer = new PrintWriter("C:\\Users\\33658\\OneDrive\\Documents\\Réseau S6\\test.csv")
+    csvData.foreach(writer.println)
+    writer.close()
+
+    // Écriture du RDD en tant que fichier CSV
+
 
        sys.exit()
-          // FAUT MODIF LE MAIN
+
 
 
 
