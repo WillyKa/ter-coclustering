@@ -12,9 +12,11 @@ trait TopoFactor extends Serializable {
 
 object BiTMTopoFactor extends TopoFactor {
   def gen(maxIter:Int, currentIter:Int, nbNeurons: Int) = {
-    val T:Double = (maxIter - currentIter + 1) / maxIter.toDouble
-    //val T = 0.9
-    Array.tabulate(nbNeurons*2)(dist => exp(dist / T))
+    val Tmin:Double = 0.9
+    val Tmax:Double = 8
+    val T:Double =Math.pow(Tmax * (Tmin /Tmax), (currentIter/maxIter.toDouble))
+    
+    Array.tabulate(nbNeurons*2)(dist => exp(-dist / T))
   }
 }
 
