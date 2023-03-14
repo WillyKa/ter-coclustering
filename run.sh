@@ -15,3 +15,6 @@ java \
     --add-opens=java.base/sun.util.calendar=ALL-UNNAMED \
     --add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED \
     -jar ./target/NPLBM-1.0-jar-with-dependencies.jar
+
+
+   # scala -J-Xmx16g ./target/NPLBM-1.0-jar-with-dependencies.jar
