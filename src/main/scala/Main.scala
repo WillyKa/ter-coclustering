@@ -8,6 +8,8 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
 
+import scala.collection.mutable.ArrayBuffer
+import scala.util.parsing.json.JSON
 import java.io.PrintWriter
 import scala.collection.mutable.ArrayBuffer
 import utils.{DataGenerator, NamedVector}
@@ -73,10 +75,27 @@ object Main {
       textFile("C:\\Users\\33658\\IdeaProjects\\NPLBM\\src\\main\\waveform-5000_csv.csv").map
     (line => line.split(",").map(_.toDouble))*/
 
-    val datas = sc.textFile("C:\\Users\\33658\\IdeaProjects\\ter-coclustering\\src\\main\\waveform-5000_csv.csv")
+   /* val datas = sc.textFile("D:\\vectors_cleaned2.csv")
       .mapPartitionsWithIndex((index, iterator) => if (index == 0) iterator.drop(1) else iterator)
       .map(line => line.split(",").map(_.toDouble).dropRight(1))
 
+*/
+    
+      val datas = sc.textFile("D:\\vectors_cleaned3xi.csv")
+      .map(line => line.split(",").map(.toDouble))
+/*
+val datas = sc
+      .textFile("C:\\Users\\lydid\\OneDrive\\Bureau\\imgClustering\\*")
+      .flatMap(line => {
+        val json =
+          JSON.parseFull(line).get.asInstanceOf[List[List[List[Double]]]]
+        val arrays = new ArrayBuffer[Array[Double]]
+        for (i <- 0 until json.size) {
+          val values = json(i)(0)
+          arrays += values.toArray
+        }
+        arrays
+      })*/
     val premiereLigne = datas.first()
 
 
@@ -98,7 +117,7 @@ object Main {
 
 
     val csvData = affData.map(_.mkString(",")).collect()
-    val writer = new PrintWriter("C:\\Users\\33658\\OneDrive\\Documents\\Réseau S6\\test.csv")
+    val writer = new PrintWriter("C:\\Users\\lydid\\OneDrive\\Bureau\\test.csv")
     csvData.foreach(writer.println)
     writer.close()
 
