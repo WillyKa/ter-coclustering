@@ -1,35 +1,14 @@
-
-import breeze.linalg.DenseVector
-import org.apache.log4j.PropertyConfigurator
 import org.apache.spark.SparkContext
-import org.apache.spark.api.java.JavaRDD.fromRDD
-import org.apache.spark.ml.linalg.{Vector, Vectors}
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.{SparkConf, SparkContext}
-
-import scala.collection.mutable.ArrayBuffer
-import scala.util.parsing.json.JSON
+import org.apache.spark.{SparkConf}
 import java.io.PrintWriter
-import scala.collection.mutable.ArrayBuffer
-import utils.{DataGenerator, NamedVector}
-
-import java.security.Permission
-import java.util.Random
 
 
-
-
-
-//import org.altic.spark.clustering.utils.{NamedVector, DataGenerator}
-
-//object RunBiTM extends App {
 object Main {
 
   val conf = new SparkConf().setAppName("Mon application Spark").setMaster("local[*]")
   val sc = new SparkContext(conf)
+
   def main(args: Array[String]) {
-    println("Hey");
 
 
     val nbRowSOM = 10
@@ -38,95 +17,22 @@ object Main {
     val dataNbObs = 4
     val dataNbVars = 2
 
-
-    class AffectedVector(var rowNeuronId: Int, elements: Array[Double]) extends DenseVector(elements) {
-      def indices = elements.indices
-    }
-
-    def parseData(line: String): AffectedVector = {
-      // TODO : Remplacer 0 par rand
-      new AffectedVector(1, line.split(' ').map(_.toDouble))
-    }
-
-
-
-
-
-    // Read data from file
-    //val lines = sc.textFile("/home/tug/ScalaProjects/spark/kmeans_data.txt")
-    //val datas = lines.map(parseData _).cache()
-
-    //val datas = sc.parallelize(Array.fill(1)(parseData("1")), 1)
-
-
-   // val arrDatas = DataGenerator.gen2ClsNDims(dataNbObs, dataNbVars).getNamedVector
-    //val arrDatas = Array(Vector(Array(1.0, 1.1)), Vector(Array(2.0, 2.1)))
-    //val arrDatas = Array.tabulate(dataNbObs)(i => new Vector(Array.tabulate(dataNbVars)(j => i*20+j+10)))
-    //val arrDatas = Array.tabulate(dataNbObs)(i => new AffectedVector(1, Array.tabulate(dataNbVars)(j => 1)))
-    //val datas = sc.parallelize(arrDatas, 6)
-
-
-    val myVector = Vectors.zeros(10000)
-
-
-   //val datas :RDD[NamedVector] = sc.emptyRDD
-
-    /*val datas = sc.
-      textFile("C:\\Users\\33658\\IdeaProjects\\NPLBM\\src\\main\\waveform-5000_csv.csv").map
-    (line => line.split(",").map(_.toDouble))*/
-
-   /* val datas = sc.textFile("D:\\vectors_cleaned2.csv")
+    // Fichier Input contenant le csv qu'on va entrainer .
+    val datas = sc.textFile("C:\\Users\\33658\\IdeaProjects\\ter-coclustering\\src\\main\\waveform-5000_csv.csv")
       .mapPartitionsWithIndex((index, iterator) => if (index == 0) iterator.drop(1) else iterator)
       .map(line => line.split(",").map(_.toDouble).dropRight(1))
-
-*/
-    
-      val datas = sc.textFile("D:\\vectors_cleaned3xi.csv")
-      .map(line => line.split(",").map(.toDouble))
-/*
-val datas = sc
-      .textFile("C:\\Users\\lydid\\OneDrive\\Bureau\\imgClustering\\*")
-      .flatMap(line => {
-        val json =
-          JSON.parseFull(line).get.asInstanceOf[List[List[List[Double]]]]
-        val arrays = new ArrayBuffer[Array[Double]]
-        for (i <- 0 until json.size) {
-          val values = json(i)(0)
-          arrays += values.toArray
-        }
-        arrays
-      })*/
-    val premiereLigne = datas.first()
-
-
-    /*ON DEVRA PEUT ETRE AUSSI ENLEVER LA COLONNE CLASS ( COMME LE PROF AVAIT DIT )*/
-
-
-    /*PEUT ETRE ON POURRA ABANDONNER LE NAMEDVECTOR ?*/
-          //val datas = sc.textFile("/home/tug/pyImg/randImg.4colors.data").map(line => new Vector(line.split("\t").map(_.toDouble)))
-
-
-          // Initialisation du model
-        val model = new BiTM(nbRowSOM, nbColSOM,datas)
-         //val model = new Croeuc(nbRowSOM * nbColSOM, datas)
-
-
-          model.training(nbIter)
-
-          val affData = model.affectation(datas)
-
-
+    // Initialisation du model ( Choisir BiTM ou Croeuc )
+    val model = new BiTM(nbRowSOM, nbColSOM, datas)
+    //val model = new Croeuc(nbRowSOM * nbColSOM, datas)
+    model.training(nbIter)
+    val affData = model.affectation(datas)
     val csvData = affData.map(_.mkString(",")).collect()
-    val writer = new PrintWriter("C:\\Users\\lydid\\OneDrive\\Bureau\\test.csv")
+    // Fichier Output contenant le csv résultant .
+    val writer = new PrintWriter("C:\\Users\\33658\\OneDrive\\Documents\\Réseau S6\\test.csv")
     csvData.foreach(writer.println)
     writer.close()
 
-    // Écriture du RDD en tant que fichier CSV
-
-
-       sys.exit()
-
-
+    sys.exit()
 
 
   }
