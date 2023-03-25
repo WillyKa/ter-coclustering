@@ -55,3 +55,5 @@ You can run the script as follows:
 ```
 ./run.sh
 ```
+Just incase make sure that the input file uses CSV type with the dataset using commas separator.
+Check for the path in the Main.scala file and change it to your dataset path.
