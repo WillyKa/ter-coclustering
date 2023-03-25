@@ -11,7 +11,7 @@ This bitmap coclustering algorithm uses the MapReduce technique to improve proce
  Map and Reduce can be executed independently on all machines in the cluster simultaneously.
 
 
-![Organisation BiTM ](https:C:\Users\lydid\OneDrive\Bureau\ter\ter-coclustering\images.jpg)
+![Organisation BiTM ](https:images.jpg)
 
 
 ## Dataset
