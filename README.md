@@ -19,7 +19,8 @@ The algorithm iterates over four main steps:
 
 The obtained results depend on the `NEIGHBORHOOD` function and the function controlling T. We use the function below to define the neighborhood:
 
-(mettre fonction K^T expo(négatif là))
+
+ $K^T ( \sigma (c_r ,c_s))= e^\frac{- \sigma (c_r ,c_s) }{T}$
 
 where T represents the temperature which decreases based on two predefined values Tmax and Tmin, in order to control the size of the neighborhood influencing a given cell on the map.
 
