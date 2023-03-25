@@ -1,6 +1,6 @@
-# NPLBM:  Non-Parametric Latent Block Model
+# BiTM:  Biclustering using Topological Maps
 
-This repository contains the Scala / Spark source code that implements the time series co-clustering method NPLBM and LBM
+This repository contains the Scala / Spark source code that implements the time series co-clustering method BiTM
 
 ## Quick start
 
