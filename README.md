@@ -24,7 +24,7 @@ The obtained results depend on the `NEIGHBORHOOD` function and the function cont
 
 where T represents the temperature which decreases based on two predefined values Tmax and Tmin, in order to control the size of the neighborhood influencing a given cell on the map.
 
-$T=T_m_a_x ( \frac{ T_m_i_n}{T_m_a_x})^\frac{ITER}{NBRiter}$
+$T=T_{max} ( \frac{ T_{min}}{T_{max}})^\frac{ITER}{NBRiter}$
 
 This allows for the reorganization of our data as follows:
 
